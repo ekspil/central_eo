@@ -128,6 +128,13 @@ class App {
         const serverInfo = await server.listen(4001)
 
         console.log(`GraphQL Server ready at ${serverInfo.url}`)
+
+        let dddd = [{"name": "Бургер","price": 129,"count": 2,"station": 1,"code": 1},{"name": "Бургер","price": 129,"count": 2,"station": 1,"code": 1}]
+
+        let aaa = {dddd}
+        aaa = JSON.stringify(aaa)
+        console.log(aaa)
+
     }
 }
 

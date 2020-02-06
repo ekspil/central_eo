@@ -15,6 +15,21 @@ const Sale = {
         type: Sequelize.DataTypes.STRING,
         allowNull: false
     },
+    source: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false
+    },
+    type: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false
+    },
+    pin: {
+        type: Sequelize.DataTypes.STRING
+    },
+    payType: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false
+    },
     price: {
         type: Sequelize.DataTypes.DECIMAL,
         allowNull: false

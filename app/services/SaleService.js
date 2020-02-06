@@ -22,24 +22,28 @@ class SaleService {
             throw new NotAuthorized()
         }
 
-        const {restoran, items, status, price} = input
+        const {restoran, items, status, price, payType, source, type, pin} = input
 
         const sale = new Sale()
         sale.restoran = restoran
-        const arrayItems = items.split("/")
-        const checkedItems = arrayItems.map(it => {
-            const itArray = it.split("@")
-            return new Item({
-                code: itArray[0],
-                name: itArray[1],
-                price: itArray[2],
-                count: itArray[3],
-                station: itArray[4]
-            })
-        })
-        const newItems = await this.itemService.createItems({items:checkedItems}, user)
+        // const arrayItems = items.split("/")
+        // const checkedItems = arrayItems.map(it => {
+        //     const itArray = it.split("@")
+        //     return new Item({
+        //         code: itArray[0],
+        //         name: itArray[1],
+        //         price: itArray[2],
+        //         count: itArray[3],
+        //         station: itArray[4]
+        //     })
+        // })
+        const newItems = await this.itemService.createItems({items}, user)
         sale.status = status
         sale.price = price
+        sale.payType = payType
+        sale.pin = pin
+        sale.type = type
+        sale.source = source
         const createdSale = await this.Sale.create(sale)
         await createdSale.setItems(newItems)
         return createdSale

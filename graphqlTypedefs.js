@@ -11,6 +11,20 @@ const typeDefs = gql`
         CANCELED
     }
     
+     enum PayType {
+        CASH
+        CARD
+        ONLINE
+        BONUS
+    }    
+     enum Type {
+        IN
+        OUT
+        INAPP
+        OUTAPP
+        DELIVERY
+    }
+    
     type Item {
         id: Int!
         code: Int!
@@ -27,6 +41,10 @@ const typeDefs = gql`
         items: [Item!]!
         restoran: Int!
         status: SaleStatus!
+        payType: PayType!
+        source: String!
+        type: String!
+        pin: String
         createdAt: Timestamp!
     }
 
@@ -40,10 +58,23 @@ const typeDefs = gql`
     }
 
     input SaleInput {
+        id: Int
         restoran: Int!
-        items: String!
+        items: [ItemInput!]!
         price: Float!
-        status: SaleStatus!
+        status: SaleStatus!        
+        source: String!
+        pin: String
+        type: Type!
+        payType: PayType!
+    }
+    
+    input ItemInput {
+        code: Int!
+        count: Int!
+        name: String!
+        station: Int!
+        price: Float!
     }
 
     type Mutation {
