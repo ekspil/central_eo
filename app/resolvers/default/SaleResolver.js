@@ -6,7 +6,6 @@ function SaleResolver({saleService, itemService, userService}) {
         const {user} = context
 
         const pitems = await itemService.getSaleItems(obj, user)
-
         return pitems.map(item =>  new ItemDTO(item))
     }
 

@@ -30,21 +30,19 @@ class SaleService {
         const checkedItems = arrayItems.map(it => {
             const itArray = it.split("@")
             return new Item({
-                name: itArray[0],
-                price: itArray[1],
-                count: itArray[2],
-                station: itArray[3]
+                code: itArray[0],
+                name: itArray[1],
+                price: itArray[2],
+                count: itArray[3],
+                station: itArray[4]
             })
         })
-        console.log(checkedItems)
         const newItems = await this.itemService.createItems({items:checkedItems}, user)
         sale.status = status
         sale.price = price
-        console.log(sale)
-        console.log(newItems)
         const createdSale = await this.Sale.create(sale)
-        createdSale.setItems(newItems)
-        return true
+        await createdSale.setItems(newItems)
+        return createdSale
     }
 
     async getSaleStatus(saleId, user) {

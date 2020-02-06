@@ -19,6 +19,17 @@ class ItemService {
             return its.id
         })
     }
+    async getSaleItems(input, user) {
+        if (!user || !user.checkPermission(Permission.CREATE_SALE)) {
+            throw new NotAuthorized()
+        }
+        const {id} = input
+        const where = {
+            sale_id: id
+        }
+
+        return await this.Item.findAll({where})
+    }
 
 }
 

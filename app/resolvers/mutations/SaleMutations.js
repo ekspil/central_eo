@@ -1,4 +1,4 @@
-const ItemDTO = require("../../models/dto/ItemDTO")
+const SaleDTO = require("../../models/dto/SaleDTO")
 
 function SaleMutations({userService, saleService, itemService}) {
 
@@ -8,7 +8,7 @@ function SaleMutations({userService, saleService, itemService}) {
 
         const sale = await saleService.createSale(input, user)
 
-        return true
+        return new SaleDTO(sale)
     }
 
     return {

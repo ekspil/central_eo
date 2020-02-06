@@ -13,6 +13,9 @@ const Item = {
     station: {
         type: Sequelize.DataTypes.INTEGER
     },
+    code: {
+        type: Sequelize.DataTypes.INTEGER
+    },
     price: {
         type: Sequelize.DataTypes.FLOAT
     },

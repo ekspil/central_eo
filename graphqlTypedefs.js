@@ -13,8 +13,12 @@ const typeDefs = gql`
     
     type Item {
         id: Int!
+        code: Int!
         count: Int!
         name: String!
+        station: Int!
+        price: Float!
+        
     }
     
     type Sale {
@@ -44,7 +48,7 @@ const typeDefs = gql`
 
     type Mutation {
         requestToken(input: RequestTokenInput!): String
-        createSale(input: SaleInput!): Boolean!
+        createSale(input: SaleInput!): Sale!
     }
 `
 
