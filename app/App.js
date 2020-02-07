@@ -9,10 +9,12 @@ const ContextResolver = require("./resolvers/ContextResolver")
 const SaleService = require("./services/SaleService")
 const ItemService = require("./services/ItemService")
 const UserService = require("./services/UserService")
+const RestoranService = require("./services/RestoranService")
 
 const Sale = require("./models/sequelize/Sale")
 const Item = require("./models/sequelize/Item")
 const User = require("./models/sequelize/User")
+const Restoran = require("./models/sequelize/Restoran")
 
 const redis = new Redis({
     port: 6379,
@@ -46,6 +48,7 @@ class App {
         const SaleModel = sequelize.define("sales", Sale)
         const ItemModel = sequelize.define("items", Item)
         const UserModel = sequelize.define("users", User)
+        const RestoranModel = sequelize.define("restorans", Restoran)
 
         SaleModel.hasMany(ItemModel, {foreignKey: "sale_id"})
 
@@ -54,14 +57,17 @@ class App {
         const services = {
             userService: undefined,
             itemService: undefined,
+            restoranService: undefined,
             controllerService: undefined
         }
 
         services.itemService = new ItemService({ItemModel})
+        services.restoranService = new RestoranService({RestoranModel})
         services.saleService = new SaleService({
             SaleModel,
             ItemModel,
-            itemService: services.itemService
+            itemService: services.itemService,
+            restoranService: services.restoranService,
         })
         services.userService = new UserService({
             UserModel,
@@ -95,6 +101,12 @@ class App {
                 password: "test"
             }, "USER")
             user.checkPermission = () => true
+            // Create test restoran
+            await services.restoranService.createRestoran({
+                name: "test",
+                uid: "99",
+                url: "http://192.168.15.166:4000"
+            }, adminUser)
 
         }
 
@@ -129,11 +141,6 @@ class App {
 
         console.log(`GraphQL Server ready at ${serverInfo.url}`)
 
-        let dddd = [{"name": "Бургер","price": 129,"count": 2,"station": 1,"code": 1},{"name": "Бургер","price": 129,"count": 2,"station": 1,"code": 1}]
-
-        let aaa = {dddd}
-        aaa = JSON.stringify(aaa)
-        console.log(aaa)
 
     }
 }

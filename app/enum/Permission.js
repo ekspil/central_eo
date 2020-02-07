@@ -11,6 +11,9 @@ const Permission = {
     "CONFIRM_USER_ACTION": "CONFIRM_USER_ACTION",
     "GET_ALL_USERS": "GET_ALL_USERS",
 
+    // Admin
+    "ALL_PERMISSIONS": "ALL_PERMISSIONS",
+
 }
 
 module.exports = Permission

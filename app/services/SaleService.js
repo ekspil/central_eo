@@ -2,13 +2,15 @@ const NotAuthorized = require("../errors/NotAuthorized")
 const Sale = require("../models/Sale")
 const Item = require("../models/Item")
 const Permission = require("../enum/Permission")
+const fetchUtils = require("../utils/fetchUtils")
 
 class SaleService {
 
-    constructor({SaleModel, ItemModel, itemService}) {
+    constructor({SaleModel, ItemModel, itemService, restoranService}) {
         this.Sale = SaleModel
         this.Item = ItemModel
         this.itemService = itemService
+        this.restoranService = restoranService
 
         this.createSale = this.createSale.bind(this)
         this.getSaleStatus = this.getSaleStatus.bind(this)
@@ -23,20 +25,10 @@ class SaleService {
         }
 
         const {restoran, items, status, price, payType, source, type, pin} = input
-
+        const restInfo = await this.restoranService.getRestoranByUid({uid: restoran}, user)
+        await fetchUtils.sendToRestoran({restoran, items, status, price, payType, source, type, pin}, restInfo.url)
         const sale = new Sale()
         sale.restoran = restoran
-        // const arrayItems = items.split("/")
-        // const checkedItems = arrayItems.map(it => {
-        //     const itArray = it.split("@")
-        //     return new Item({
-        //         code: itArray[0],
-        //         name: itArray[1],
-        //         price: itArray[2],
-        //         count: itArray[3],
-        //         station: itArray[4]
-        //     })
-        // })
         const newItems = await this.itemService.createItems({items}, user)
         sale.status = status
         sale.price = price
