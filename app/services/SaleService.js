@@ -26,7 +26,7 @@ class SaleService {
 
         const {restoran, items, status, price, payType, source, type, pin} = input
         const restInfo = await this.restoranService.getRestoranByUid({uid: restoran}, user)
-        await fetchUtils.sendToRestoran({restoran, items, status, price, payType, source, type, pin}, restInfo.url)
+
         const sale = new Sale()
         sale.restoran = restoran
         const newItems = await this.itemService.createItems({items}, user)
@@ -38,6 +38,9 @@ class SaleService {
         sale.source = source
         const createdSale = await this.Sale.create(sale)
         await createdSale.setItems(newItems)
+
+        await fetchUtils.sendToRestoran({id: createdSale.id , restoran, items, status, price, payType, source, type, pin}, restInfo.url)
+
         return createdSale
     }
 
