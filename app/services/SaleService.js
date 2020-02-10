@@ -1,4 +1,5 @@
 const NotAuthorized = require("../errors/NotAuthorized")
+const SaleNotFound = require("../errors/SaleNotFound")
 const Sale = require("../models/Sale")
 const Item = require("../models/Item")
 const Permission = require("../enum/Permission")
@@ -52,6 +53,25 @@ class SaleService {
         return await this.Sale.findOne({
             where: {id: saleId}
         })
+    }
+
+    async changeSaleStatus(input, user) {
+        if (!user || !user.checkPermission(Permission.CHANGE_STATUS_VL)) {
+            throw new NotAuthorized()
+        }
+        const {id, status} = input
+        if (status !== "CLOSED" && !user.checkPermission(Permission.CHANGE_STATUS)){
+            throw new NotAuthorized()
+        }
+
+        const sale = await this.Sale.findOne({
+            where: {id}
+        })
+        if(!sale){
+            throw new SaleNotFound()
+        }
+        sale.status = status
+        return sale.save()
     }
 
 }

@@ -6,12 +6,15 @@ const USER = [
     Permission.EDIT_EMAIL,
     Permission.EDIT_PASSWORD,
     Permission.GET_SALES,
+    Permission.CHANGE_STATUS_VL,
+    Permission.CHANGE_STATUS,
 
 
 ]
 
 const AGGREGATE = [
     Permission.CREATE_SALE,
+    Permission.CHANGE_STATUS_VL,
 ]
 
 const RolePermissions = {

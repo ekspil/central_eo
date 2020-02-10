@@ -11,8 +11,18 @@ function SaleMutations({userService, saleService, itemService}) {
         return new SaleDTO(sale)
     }
 
+    const changeSaleStatus = async (root, args, context) => {
+        const {input} = args
+        const {user} = context
+
+        const sale = await saleService.changeSaleStatus(input, user)
+
+        return new SaleDTO(sale)
+    }
+
     return {
         createSale,
+        changeSaleStatus
     }
 
 }

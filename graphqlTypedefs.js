@@ -68,6 +68,11 @@ const typeDefs = gql`
         type: Type!
         payType: PayType!
     }
+
+    input ChangeSaleStatusInput {
+        id: Int
+        status: SaleStatus!        
+    }
     
     input ItemInput {
         code: Int!
@@ -80,6 +85,7 @@ const typeDefs = gql`
     type Mutation {
         requestToken(input: RequestTokenInput!): String
         createSale(input: SaleInput!): Sale!
+        changeSaleStatus(input: ChangeSaleStatusInput!): Sale!
     }
 `
 
