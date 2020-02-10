@@ -1,6 +1,6 @@
 class SaleDTO {
 
-    constructor({id, restoran, price, status, payType, source, type, pin, createdAt}) {
+    constructor({id, restoran, price, status, payType, source, type, pin, text, extId, createdAt}) {
         this.id = id
         this.restoran = restoran
         this.status = status
@@ -9,6 +9,8 @@ class SaleDTO {
         this.source = source
         this.type = type
         this.pin = pin
+        this.text = text
+        this.extId = extId
         this.createdAt = createdAt
     }
 }

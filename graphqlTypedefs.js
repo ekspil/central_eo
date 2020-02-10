@@ -45,11 +45,14 @@ const typeDefs = gql`
         source: String!
         type: String!
         pin: String
+        text: String
+        extId: String
         createdAt: Timestamp!
     }
 
     type Query {
         getSaleStatus(id: Int!): Sale
+        getActiveSales(restoran: Int!): [Sale]
     }
 
     input RequestTokenInput {
@@ -67,6 +70,8 @@ const typeDefs = gql`
         pin: String
         type: Type!
         payType: PayType!
+        text: String
+        extId: String
     }
 
     input ChangeSaleStatusInput {

@@ -26,6 +26,12 @@ const Sale = {
     pin: {
         type: Sequelize.DataTypes.STRING
     },
+    text: {
+        type: Sequelize.DataTypes.STRING
+    },
+    extId: {
+        type: Sequelize.DataTypes.STRING
+    },
     payType: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false

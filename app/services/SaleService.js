@@ -1,6 +1,8 @@
 const NotAuthorized = require("../errors/NotAuthorized")
 const SaleNotFound = require("../errors/SaleNotFound")
+const RestoranError = require("../errors/RestoranError")
 const Sale = require("../models/Sale")
+const {Op} = require("sequelize")
 const Item = require("../models/Item")
 const Permission = require("../enum/Permission")
 const fetchUtils = require("../utils/fetchUtils")
@@ -25,8 +27,11 @@ class SaleService {
             throw new NotAuthorized()
         }
 
-        const {restoran, items, status, price, payType, source, type, pin} = input
+        const {restoran, items, status, price, payType, source, type, pin, text, extId} = input
         const restInfo = await this.restoranService.getRestoranByUid({uid: restoran}, user)
+        if(!restInfo){
+            throw new RestoranError()
+        }
 
         const sale = new Sale()
         sale.restoran = restoran
@@ -37,6 +42,8 @@ class SaleService {
         sale.pin = pin
         sale.type = type
         sale.source = source
+        sale.text = text
+        sale.extId = extId
         const createdSale = await this.Sale.create(sale)
         await createdSale.setItems(newItems)
 
@@ -55,12 +62,27 @@ class SaleService {
         })
     }
 
+    async getActiveSales(restoran, user) {
+        if (!user || !user.checkPermission(Permission.GET_SALES)) {
+            throw new NotAuthorized()
+        }
+
+        return await this.Sale.findAll({
+            where: {
+            [Op.and]: [{restoran}, {createdAt: {
+                    [Op.gt]: (new Date().getTime() - 24*60*60*1000)
+                }},
+                {[Op.or]: [{status: "PAYED"},{status: "READY"}]}]
+        }
+        })
+    }
+
     async changeSaleStatus(input, user) {
         if (!user || !user.checkPermission(Permission.CHANGE_STATUS_VL)) {
             throw new NotAuthorized()
         }
         const {id, status} = input
-        if (status !== "CLOSED" && !user.checkPermission(Permission.CHANGE_STATUS)){
+        if (status !== "CLOSED" || status !== "CANCELED" && !user.checkPermission(Permission.CHANGE_STATUS)){
             throw new NotAuthorized()
         }
 
