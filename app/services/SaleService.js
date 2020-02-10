@@ -82,6 +82,9 @@ class SaleService {
             throw new NotAuthorized()
         }
         const {id, status} = input
+        if (status !== "CLOSED" || status !== "CANCELED" && !user.checkPermission(Permission.CHANGE_STATUS)){
+            throw new NotAuthorized()
+        }
 
         const sale = await this.Sale.findOne({
             where: {id}
