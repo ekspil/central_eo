@@ -40,6 +40,9 @@ const Sale = {
         type: Sequelize.DataTypes.DECIMAL,
         allowNull: false
     },
+    sendToEO: {
+        type: Sequelize.DataTypes.BOOLEAN,
+    },
     createdAt: {
         type: Sequelize.DataTypes.DATE,
         allowNull: true,

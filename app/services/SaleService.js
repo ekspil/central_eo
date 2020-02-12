@@ -1,5 +1,6 @@
 const NotAuthorized = require("../errors/NotAuthorized")
 const SaleNotFound = require("../errors/SaleNotFound")
+const SaleExist = require("../errors/SaleExist")
 const RestoranError = require("../errors/RestoranError")
 const Sale = require("../models/Sale")
 const {Op} = require("sequelize")
@@ -32,6 +33,12 @@ class SaleService {
         if(!restInfo){
             throw new RestoranError()
         }
+        const existSale = await this.Sale.findOne({
+            where: {extId}
+        })
+        if(existSale){
+            throw new SaleExist()
+        }
 
         const sale = new Sale()
         sale.restoran = restoran
@@ -44,10 +51,13 @@ class SaleService {
         sale.source = source
         sale.text = text
         sale.extId = extId
+        sale.sendToEO = false
         const createdSale = await this.Sale.create(sale)
         await createdSale.setItems(newItems)
 
-        await fetchUtils.sendToRestoran({id: createdSale.id , restoran, items, status, price, payType, source, type, pin}, restInfo.url)
+        await fetchUtils.sendToRestoran({id: createdSale.id , restoran, items, status, price, payType, source, type, pin, extId, text}, restInfo.url)
+        createdSale.sendToEO = true
+        await createdSale.save()
 
         return createdSale
     }
