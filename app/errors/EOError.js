@@ -3,7 +3,7 @@ class NotAuthorized extends Error {
     constructor() {
         super()
 
-        this.message = "Can't deliver message to restoran."
+        this.message = "Can't deliver message to restoran"
         this.code = 10002
     }
 }
