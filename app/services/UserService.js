@@ -38,7 +38,7 @@ class UserService {
                 throw new UserExists()
             }
 
-            let user = new User()
+            let user = new User({})
             user.phone = phone
             user.email = email
             user.passwordHash = await this.hashPassword(password)
