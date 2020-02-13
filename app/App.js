@@ -3,6 +3,9 @@ const Sequelize = require("sequelize")
 const {ApolloServer} = require("apollo-server")
 const typeDefs = require("../graphqlTypedefs")
 
+
+const NotSendSaleCheck = require("./schedule/NotSendSaleCheck")
+
 const Resolvers = require("./resolvers")
 const ContextResolver = require("./resolvers/ContextResolver")
 
@@ -72,6 +75,19 @@ class App {
             UserModel,
             redis,
             machineService: services.machineService
+        })
+
+
+
+        const schedule = {
+
+            notSendSaleCheck: undefined
+        }
+        schedule.notSendSaleCheck = new NotSendSaleCheck({
+            SaleModel,
+            ItemModel,
+            itemService: services.itemService,
+            restoranService: services.restoranService,
         })
 
 

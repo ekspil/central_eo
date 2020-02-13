@@ -1,5 +1,4 @@
 const fetch = require("node-fetch")
-const EOError = require("../errors/EOError")
 
 async function sendToRestoran(sale, url) {
     const body = JSON.stringify(sale)
@@ -16,11 +15,11 @@ async function sendToRestoran(sale, url) {
             case 200:
                 return true
             default:
-                throw new EOError()
+                return false
         }
     }
     catch{
-        throw new EOError()
+        return false
     }
 
 

@@ -1,6 +1,7 @@
 const NotAuthorized = require("../errors/NotAuthorized")
 const SaleNotFound = require("../errors/SaleNotFound")
 const SaleExist = require("../errors/SaleExist")
+const EOError = require("../errors/EOError")
 const RestoranError = require("../errors/RestoranError")
 const Sale = require("../models/Sale")
 const {Op} = require("sequelize")
@@ -40,7 +41,7 @@ class SaleService {
             throw new SaleExist()
         }
 
-        const sale = new Sale()
+        const sale = new Sale({})
         sale.restoran = restoran
         const newItems = await this.itemService.createItems({items}, user)
         sale.status = status
@@ -55,7 +56,10 @@ class SaleService {
         const createdSale = await this.Sale.create(sale)
         await createdSale.setItems(newItems)
 
-        await fetchUtils.sendToRestoran({id: createdSale.id , restoran, items, status, price, payType, source, type, pin, extId, text}, restInfo.url)
+        const eores = await fetchUtils.sendToRestoran({id: createdSale.id , restoran, items, status, price, payType, source, type, pin, extId, text}, restInfo.url)
+        if(!eores){
+            throw new EOError()
+        }
         createdSale.sendToEO = true
         await createdSale.save()
 
@@ -92,9 +96,6 @@ class SaleService {
             throw new NotAuthorized()
         }
         const {id, status} = input
-        if (status !== "CLOSED" || status !== "CANCELED" && !user.checkPermission(Permission.CHANGE_STATUS)){
-            throw new NotAuthorized()
-        }
 
         const sale = await this.Sale.findOne({
             where: {id}
