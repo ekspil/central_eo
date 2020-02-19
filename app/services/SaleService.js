@@ -106,6 +106,7 @@ class SaleService {
         }
         if(sale.source === "VL.RU" && status === "READY" ){
             const result = await fetchUtils.sendStatusToVL({id, status})
+            console.log("Отправлено VL: "+ result)
             if(!result){
                 throw new NotSendToVL()
             }
