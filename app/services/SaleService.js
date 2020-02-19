@@ -1,5 +1,6 @@
 const NotAuthorized = require("../errors/NotAuthorized")
 const SaleNotFound = require("../errors/SaleNotFound")
+const NotSendToVL = require("../errors/NotSendToVL")
 const SaleExist = require("../errors/SaleExist")
 const EOError = require("../errors/EOError")
 const RestoranError = require("../errors/RestoranError")
@@ -102,6 +103,12 @@ class SaleService {
         })
         if(!sale){
             throw new SaleNotFound()
+        }
+        if(sale.source === "VL.RU" && status === "READY" ){
+            const result = await fetchUtils.sendStatusToVL({id, status})
+            if(!result){
+                throw new NotSendToVL()
+            }
         }
         sale.status = status
         return sale.save()
