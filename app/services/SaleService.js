@@ -56,7 +56,10 @@ class SaleService {
         sale.sendToEO = false
         const createdSale = await this.Sale.create(sale)
         await createdSale.setItems(newItems)
+        if(source === "VL.RU"){
 
+            await fetchUtils.sendToPrinter({items, extId, restInfo})
+        }
         const eores = await fetchUtils.sendToRestoran({id: createdSale.id , restoran, items, status, price, payType, source, type, pin, extId, text}, restInfo.url)
         if(!eores){
             throw new EOError()
@@ -106,7 +109,6 @@ class SaleService {
         }
         if(sale.source === "VL.RU" && status === "READY" ){
             const result = await fetchUtils.sendStatusToVL({id, status})
-            console.log("Отправлено VL: "+ result)
             if(!result){
                 throw new NotSendToVL()
             }

@@ -1,4 +1,5 @@
 const fetch = require("node-fetch")
+const prepPrintBody = require("../utils/prepPrintBody")
 
 async function sendToRestoran(sale, url) {
     const body = JSON.stringify(sale)
@@ -7,6 +8,38 @@ async function sendToRestoran(sale, url) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
+            },
+            body
+        })
+
+        switch (response.status) {
+            case 200:
+                return true
+            default:
+                return false
+        }
+    }
+    catch{
+        return false
+    }
+
+
+}
+
+
+async function sendToPrinter(input) {
+
+    const data = prepPrintBody.prepare(input)
+    const UrlServer = "http://10.5.0.2:5893//Execute"; // HTTP адрес сервера торгового оборудования, если пусто то локальный вызов TODO сделать забор адреса из информации
+    const User = "Admin"; // Пользователь доступа к серверу торгового оборудования
+    const Password = ""; // Пароль доступа к серверу торгового оборудования
+    const body = JSON.stringify(data)
+    try{
+        const response = await fetch(UrlServer, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Basic " + Buffer.from(User + ":" + Password).toString('base64')
             },
             body
         })
@@ -55,5 +88,6 @@ async function sendStatusToVL(input) {
 
 module.exports = {
     sendToRestoran,
+    sendToPrinter,
     sendStatusToVL
 }

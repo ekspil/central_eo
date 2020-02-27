@@ -85,6 +85,7 @@ const typeDefs = gql`
         name: String!
         station: Int!
         price: Float!
+        info: String
     }
 
     type Mutation {
