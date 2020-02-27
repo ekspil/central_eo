@@ -1,6 +1,6 @@
 function prepare(input) {
 
-    const {items, extId} = input
+    const {items, extId, price} = input
     const date = new Date()
     const data = {
         Command: "PrintDocument",
@@ -42,6 +42,13 @@ function prepare(input) {
             },
             {
                 PrintText: {
+                    Text: "Сумма заказа: "+ price + " руб.",
+                    Font: 1, // 1-4, 0 - по настройкам ККМ
+                    Intensity: 15, // 1-15, 0 - по настройкам ККМ
+                },
+            },
+            {
+                PrintText: {
                     Text: ">#2#<*************************",
                     Font: 1,
                 },
@@ -53,7 +60,7 @@ function prepare(input) {
 
         data.CheckStrings.push({
             PrintText: {
-                Text: i.count+" x "+i.name,
+                Text: i.count+" x "+i.name + " <#8#> " + i.price + " руб.",
                 Font: 2, // 1-4, 0 - по настройкам ККМ
                 Intensity: 10, // 1-15, 0 - по настройкам ККМ
             },

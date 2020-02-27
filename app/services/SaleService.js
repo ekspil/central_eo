@@ -58,7 +58,7 @@ class SaleService {
         await createdSale.setItems(newItems)
         if(source === "VL.RU"){
 
-            await fetchUtils.sendToPrinter({items, extId, restInfo})
+            await fetchUtils.sendToPrinter({items, extId, restInfo, price})
         }
         const eores = await fetchUtils.sendToRestoran({id: createdSale.id , restoran, items, status, price, payType, source, type, pin, extId, text}, restInfo.url)
         if(!eores){
