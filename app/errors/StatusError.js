@@ -3,7 +3,7 @@ class StatusError extends Error {
     constructor() {
         super()
 
-        this.message = "Order already ready"
+        this.message = "Order in status, that can not be canceled"
         this.code = 10020
     }
 }
