@@ -3,6 +3,7 @@ const SaleNotFound = require("../errors/SaleNotFound")
 const NotSendToVL = require("../errors/NotSendToVL")
 const SaleExist = require("../errors/SaleExist")
 const EOError = require("../errors/EOError")
+const StatusError = require("../errors/StatusError")
 const RestoranError = require("../errors/RestoranError")
 const Sale = require("../models/Sale")
 const {Op} = require("sequelize")
@@ -107,7 +108,10 @@ class SaleService {
         if(!sale){
             throw new SaleNotFound()
         }
-        if(sale.source === "VL.RU" && status === "CANCELED" ){
+        if(sale.source === "VL.RU" && status === "CANCELED"  ){
+            if(sale.status !== "PAYED"){
+                throw new StatusError()
+            }
             const restInfo = await this.restoranService.getRestoranByUid({uid: sale.restoran}, user)
             if(!restInfo){
                 throw new RestoranError()
