@@ -107,6 +107,16 @@ class SaleService {
         if(!sale){
             throw new SaleNotFound()
         }
+        if(sale.source === "VL.RU" && status === "CANCELED" ){
+            const restInfo = await this.restoranService.getRestoranByUid({uid: sale.restoran}, user)
+            if(!restInfo){
+                throw new RestoranError()
+            }
+            const result = await fetchUtils.deleteInRestoran({id, status}, restInfo.url)
+            if(!result){
+                throw new EOError()
+            }
+        }
         if(sale.source === "VL.RU" && status === "READY" ){
             const result = await fetchUtils.sendStatusToVL({id, status})
             if(!result){
