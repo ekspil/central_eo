@@ -84,7 +84,7 @@ async function sendToPrinter(input, url) {
 async function sendStatusToVL(input) {
     const body = JSON.stringify(input)
     try{
-        const response = await fetch(`http://proxy-stage.vl.ru/external/burger-king/order/status`, {
+        const response = await fetch(`http://proxy-stage.vl.ru/external/burger-king/order/status?auth_token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXUyJ9.eyJ1c2VybmFtZSI6ImJ1cmdlcl9raW5nIiwiaWF0IjoxNTgzMzA1Njc0fQ.yWlX_aXomm9v_ePWs1m4VYuj5S2Wwl3mRLK_6Ls2nlhGF2CRLAgvN0yjITh3S6do0ujoZBH__xyj8Iu9YafWBg`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
