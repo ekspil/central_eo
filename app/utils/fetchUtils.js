@@ -51,15 +51,13 @@ async function deleteInRestoran(sale, url) {
 }
 
 
-async function sendToPrinter(input) {
-
+async function sendToPrinter(input, url) {
     const data = prepPrintBody.prepare(input)
-    const UrlServer = "http://10.5.0.2:5893//Execute"; // HTTP адрес сервера торгового оборудования, если пусто то локальный вызов TODO сделать забор адреса из информации
     const User = "Admin"; // Пользователь доступа к серверу торгового оборудования
     const Password = ""; // Пароль доступа к серверу торгового оборудования
     const body = JSON.stringify(data)
     try{
-        const response = await fetch(UrlServer, {
+        const response = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

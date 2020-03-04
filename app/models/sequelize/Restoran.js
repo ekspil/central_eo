@@ -18,6 +18,10 @@ const Restoran = {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
     },
+    kkmServerUrl: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false,
+    },
     createdAt: {
         type: Sequelize.DataTypes.DATE,
         allowNull: true,
