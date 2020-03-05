@@ -131,17 +131,20 @@ class App {
             await services.restoranService.createRestoran({
                 name: "БургерКинг (Светланская 56)",
                 uid: 9005,
-                url: "http://10.5.0.2:4000"
+                url: "http://10.5.0.2:4000",
+                kkmServerUrl: "http://10.5.0.2:5893//Execute",
             }, adminUser)
             await services.restoranService.createRestoran({
                 name: "БургерКинг (Некрасова 82б)",
                 uid: 9017,
-                url: "http://10.17.0.2:4000"
+                url: "http://10.17.0.2:4000",
+                kkmServerUrl: "http://10.17.0.2:5893//Execute",
             }, adminUser)
             await services.restoranService.createRestoran({
                 name: "БургерКинг (Семеновская 12)",
                 uid: 9020,
-                url: "http://10.20.0.2:4000"
+                url: "http://10.20.0.2:4000",
+                kkmServerUrl: "http://10.20.0.2:5893//Execute",
             }, adminUser)
 
         }
