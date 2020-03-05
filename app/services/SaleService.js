@@ -22,6 +22,7 @@ class SaleService {
 
         this.createSale = this.createSale.bind(this)
         this.getSaleStatus = this.getSaleStatus.bind(this)
+        this.getAllSales = this.getAllSales.bind(this)
 
 
     }
@@ -94,6 +95,48 @@ class SaleService {
                 }},
                 {[Op.or]: [{status: "PAYED"},{status: "READY"}]}]
         }
+        })
+    }
+
+
+    async getAllSales(input, user) {
+        if (!user || !user.checkPermission(Permission.GET_SALES)) {
+            throw new NotAuthorized()
+        }
+        const {restoran, period, statuses} = input
+        const date = new Date()
+        const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+        let where = {}
+        if(!period){
+            where = {
+                [Op.and]: [{restoran}, {createdAt: {
+                        [Op.gt]: dayStart
+                    }}]
+            }
+            if(statuses && statuses.length > 0){
+                where[Op.and].push(
+                    {[Op.or]: statuses.map(status => {
+                            return {status}
+                        })})
+            }
+
+        }else{
+            where = {
+                [Op.and]: [{restoran}, {createdAt: {
+                        [Op.gt]: period.from
+                    }},{createdAt: {
+                        [Op.lt]: period.to
+                    }}]
+            }
+            if(statuses && statuses.length > 0){
+                where[Op.and].push(
+                    {[Op.or]: statuses.map(status => {
+                            return {status}
+                        })})
+            }
+        }
+        return await this.Sale.findAll({
+            where
         })
     }
 

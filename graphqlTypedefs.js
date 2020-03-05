@@ -49,10 +49,23 @@ const typeDefs = gql`
         extId: String
         createdAt: Timestamp!
     }
+    
+    input Period {
+        from: Timestamp!
+        to: Timestamp!
+    }
+
+        
+    input getAllSalesInput {
+        period: Period
+        statuses: [SaleStatus!]
+        restoran: Int!
+    }
 
     type Query {
         getSaleStatus(id: Int!): Sale
         getActiveSales(restoran: Int!): [Sale]
+        getAllSales(input: getAllSalesInput!): [Sale]
     }
 
     input RequestTokenInput {
