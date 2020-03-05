@@ -103,13 +103,13 @@ class SaleService {
         if (!user || !user.checkPermission(Permission.GET_SALES)) {
             throw new NotAuthorized()
         }
-        const {restoran, period, statuses} = input
+        const {restorans, period, statuses} = input
         const date = new Date()
         const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate())
         let where = {}
         if(!period){
             where = {
-                [Op.and]: [{restoran}, {createdAt: {
+                [Op.and]: [{restoran: {[Op.or]: restorans}}, {createdAt: {
                         [Op.gt]: dayStart
                     }}]
             }
@@ -122,7 +122,7 @@ class SaleService {
 
         }else{
             where = {
-                [Op.and]: [{restoran}, {createdAt: {
+                [Op.and]: [{restoran: {[Op.or]: restorans}}, {createdAt: {
                         [Op.gt]: period.from
                     }},{createdAt: {
                         [Op.lt]: period.to

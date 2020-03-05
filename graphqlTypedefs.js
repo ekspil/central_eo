@@ -59,7 +59,7 @@ const typeDefs = gql`
     input getAllSalesInput {
         period: Period
         statuses: [SaleStatus!]
-        restoran: Int!
+        restorans: [Int!]!
     }
 
     type Query {
