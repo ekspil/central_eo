@@ -1,6 +1,6 @@
 const SaleDTO = require("../../models/dto/SaleDTO")
 
-function SaleMutations({userService, saleService, itemService}) {
+function SaleMutations({userService, saleService, itemService, itemInfoService}) {
 
     const createSale = async (root, args, context) => {
         const {input} = args
@@ -20,9 +20,17 @@ function SaleMutations({userService, saleService, itemService}) {
         return new SaleDTO(sale)
     }
 
+    const setItemInfo = async (root, args, context) => {
+        const {input} = args
+        const {user} = context
+
+        return await itemInfoService.setItemInfo(input, user)
+    }
+
     return {
         createSale,
-        changeSaleStatus
+        changeSaleStatus,
+        setItemInfo
     }
 
 }

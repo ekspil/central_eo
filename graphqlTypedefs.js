@@ -86,12 +86,18 @@ const typeDefs = gql`
         station: Int!
         price: Float!
         info: String
+    }    
+    input ItemInfoInput {
+        uid: Int!
+        source: String!
+        info: String!
     }
 
     type Mutation {
         requestToken(input: RequestTokenInput!): String
         createSale(input: SaleInput!): Sale!
         changeSaleStatus(input: ChangeSaleStatusInput!): Sale!
+        setItemInfo(input: ItemInfoInput!): Boolean
     }
 `
 

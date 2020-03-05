@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize")
 
-const Restoran = {
+const ItemInfo = {
     id: {
         type: Sequelize.DataTypes.INTEGER,
         allowNull: false,
@@ -10,16 +10,13 @@ const Restoran = {
     uid: {
         type: Sequelize.DataTypes.INTEGER
     },
-    name: {
+    source: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
     },
-    url: {
+    info: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
-    },
-    kkmServerUrl: {
-        type: Sequelize.DataTypes.STRING
     },
     createdAt: {
         type: Sequelize.DataTypes.DATE,
@@ -35,4 +32,4 @@ const Restoran = {
     }
 }
 
-module.exports = Restoran
+module.exports = ItemInfo

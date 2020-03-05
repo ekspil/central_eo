@@ -15,6 +15,8 @@ const Permission = {
 
     // Admin
     "ALL_PERMISSIONS": "ALL_PERMISSIONS",
+    "CREATE_ITEM_INFO": "CREATE_ITEM_INFO",
+
 
 }
 

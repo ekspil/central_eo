@@ -11,6 +11,7 @@ const ContextResolver = require("./resolvers/ContextResolver")
 
 const SaleService = require("./services/SaleService")
 const ItemService = require("./services/ItemService")
+const ItemInfoService = require("./services/ItemInfoService")
 const UserService = require("./services/UserService")
 const RestoranService = require("./services/RestoranService")
 
@@ -18,6 +19,7 @@ const Sale = require("./models/sequelize/Sale")
 const Item = require("./models/sequelize/Item")
 const User = require("./models/sequelize/User")
 const Restoran = require("./models/sequelize/Restoran")
+const ItemInfo = require("./models/sequelize/ItemInfo")
 
 const redis = new Redis({
     port: 6379,
@@ -51,6 +53,7 @@ class App {
         const ItemModel = sequelize.define("items", Item)
         const UserModel = sequelize.define("users", User)
         const RestoranModel = sequelize.define("restorans", Restoran)
+        const ItemInfoModel = sequelize.define("item_info", ItemInfo)
 
         SaleModel.hasMany(ItemModel, {foreignKey: "sale_id"})
 
@@ -59,17 +62,20 @@ class App {
         const services = {
             userService: undefined,
             itemService: undefined,
+            itemInfoService: undefined,
             restoranService: undefined,
             controllerService: undefined
         }
 
         services.itemService = new ItemService({ItemModel})
+        services.itemInfoService = new ItemInfoService({ItemInfoModel})
         services.restoranService = new RestoranService({RestoranModel})
         services.saleService = new SaleService({
             SaleModel,
             ItemModel,
             itemService: services.itemService,
             restoranService: services.restoranService,
+            itemInfoService: services.itemInfoService
         })
         services.userService = new UserService({
             UserModel,

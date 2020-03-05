@@ -1,4 +1,4 @@
-function prepare(input) {
+async function prepare(input, itemInfoService, source) {
 
     const {items, extId, price} = input
     const date = new Date()
@@ -56,7 +56,9 @@ function prepare(input) {
         ]
     }
     for(let i of items){
-
+        if(!i.info){
+            i.info = await itemInfoService.getItemInfo({uid: i.code, source})
+        }
 
         data.CheckStrings.push({
             PrintText: {

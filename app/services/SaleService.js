@@ -13,11 +13,12 @@ const fetchUtils = require("../utils/fetchUtils")
 
 class SaleService {
 
-    constructor({SaleModel, ItemModel, itemService, restoranService}) {
+    constructor({SaleModel, ItemModel, itemService, restoranService, itemInfoService}) {
         this.Sale = SaleModel
         this.Item = ItemModel
         this.itemService = itemService
         this.restoranService = restoranService
+        this.itemInfoService = itemInfoService
 
         this.createSale = this.createSale.bind(this)
         this.getSaleStatus = this.getSaleStatus.bind(this)
@@ -59,7 +60,7 @@ class SaleService {
         await createdSale.setItems(newItems)
         if(source === "VL.RU"){
 
-            await fetchUtils.sendToPrinter({items, extId, restInfo, price}, restInfo.kkmServerUrl)
+            await fetchUtils.sendToPrinter({items, extId, restInfo, price}, restInfo.kkmServerUrl,  this.itemInfoService, source)
         }
         const eores = await fetchUtils.sendToRestoran({id: createdSale.id , restoran, items, status, price, payType, source, type, pin, extId, text}, restInfo.url)
         if(!eores){

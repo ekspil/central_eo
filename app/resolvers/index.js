@@ -6,12 +6,13 @@ const DefaultResolvers = require("./default")
 
 const Resolvers = function (injects) {
 
-    const {userService, saleService, itemService} = injects
+    const {userService, saleService, itemService, itemInfoService} = injects
 
     const mutations = new Mutations({
         userService,
         saleService,
         itemService,
+        itemInfoService
     })
 
     const defaultResolvers = new DefaultResolvers({
@@ -23,7 +24,8 @@ const Resolvers = function (injects) {
     const queries = new Queries({
         saleService,
         itemService,
-        userService
+        userService,
+        itemInfoService
     })
 
     return {
