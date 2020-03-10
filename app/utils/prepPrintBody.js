@@ -62,7 +62,7 @@ async function prepare(input, itemInfoService, source) {
 
         data.CheckStrings.push({
             PrintText: {
-                Text: i.count+" x "+i.name + " <#8#> " + i.price + " руб.",
+                Text: i.count+" x "+i.name + " " + i.price + " руб.",
                 Font: 2, // 1-4, 0 - по настройкам ККМ
                 Intensity: 10, // 1-15, 0 - по настройкам ККМ
             },

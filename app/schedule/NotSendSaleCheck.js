@@ -14,7 +14,7 @@ class Schedule {
 
 
 
-        cron.schedule('0,10,20,30,40,50 * * * * *', async () => {
+        cron.schedule('1 * * * * *', async () => {
             const notSendSales = await this.Sale.findAll({
                 where: {sendToEO: false}
             })
