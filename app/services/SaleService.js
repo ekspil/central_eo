@@ -56,7 +56,7 @@ class SaleService {
         sale.source = source
         sale.text = text
         sale.extId = extId
-        sale.sendToEO = false
+        sale.sendToEO = true
         const createdSale = await this.Sale.create(sale)
         await createdSale.setItems(newItems)
         if(source === "VL.RU"){
@@ -65,10 +65,11 @@ class SaleService {
         }
         const eores = await fetchUtils.sendToRestoran({id: createdSale.id , restoran, items, status, price, payType, source, type, pin, extId, text}, restInfo.url)
         if(!eores){
+            createdSale.sendToEO = false
+            await createdSale.save()
             throw new EOError()
         }
-        createdSale.sendToEO = true
-        await createdSale.save()
+
 
         return createdSale
     }
